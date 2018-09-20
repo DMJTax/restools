@@ -1,0 +1,64 @@
+Results toolbox for Matlab (version 1.8)
+
+This toolbox is a general toolbox for Matlab that should make it simpler
+to collect experimental results, annotate them, plot/print/show them in
+countless formats (like graphs, text tables, latex tables, html tables,
+bar graphs, surface graphs) and store them.
+
+For this a new Matlab object 'results' is created. The idea of the
+results-object is:
+1. To extend the Matlab matrix with 'feature annotations', such that
+   printing a matrix also shows the meaning of each row and column
+2. To be able to print the content of a matrix consistently in
+   different formats (like text, latex, html, in a graph, etc)
+3. To extend the averaging over a dimension such that significantly
+   different entries in a matrix are highlighted, and such that
+   missing values (=NaN's) are handled correctly
+
+The results-object should be as similar as possible to the standard
+Matlab matrix object ('double').
+
+- Installation
+
+Unzip the file, store the contents in a directory (name it for instance
+restools) and add this directory to your Matlab path.
+
+- Information and example code
+
+For the most basic information, type 'help restools'. At the end of this
+text some example scripts are listed that show the possibilities of this
+toolbox.
+
+* Notes on version 1.7.0
+- Added the errorband.m
+- Added the semibar, a semi-transparant bar plot.
+
+* Notes on version 1.7.0
+- Allowed the use of numerical values along the dimensions. This makes
+  it possible to make two types of graphs: one where the values are
+  (equidistant) labels, the other where you have arbitrary numerical values.
+- Some more sensible warnings, and removed some warnings.
+
+
+* Notes on version 1.6.2
+- Removed a tiny bug in sum.m
+
+* Notes on version 1.6.1
+- Make an extra check to see if the ANSI codes can work (i.e. if you are
+  working on a java desktop, then it does not work)
+- Added the updateresults, where a single entry in the results can be
+  updated
+- Added the sortdim, so that results can be (alphabetically) ordered
+
+* Notes on version 1.5.3
+- The code is now available for other people, so some extra help and
+  examples are provided.
+- The functions log() and exp() are overloaded for results.
+
+* Note on previous versions (1.5.2 and earlier):
+- It is personal code, and I did not maintain a history.
+
+TODO
+- Add a user-data, maybe, but is it really necessary? (It is added
+  complexity)
+
