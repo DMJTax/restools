@@ -1,4 +1,5 @@
 Results toolbox for Matlab (version 1.8)
+Results toolbox for Python (version 1.0)
 
 This toolbox is a general toolbox for Matlab that should make it simpler
 to collect experimental results, annotate them, plot/print/show them in
@@ -28,6 +29,10 @@ restools) and add this directory to your Matlab path.
 For the most basic information, type 'help restools'. At the end of this
 text some example scripts are listed that show the possibilities of this
 toolbox.
+
+* Notes on version 1.8.0
+- Made a port to Python. Reshuffled the code and made two subdirectories
+  to accomodate for that.
 
 * Notes on version 1.7.0
 - Added the errorband.m
