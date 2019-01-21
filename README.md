@@ -1,5 +1,5 @@
 Restools
-Results toolbox for Matlab.
-Version 1.2.1
+Results toolbox for Matlab and Python.
+Version 1.0.0
 
-New and improved.
+Ported the Results toolbox to Python.
