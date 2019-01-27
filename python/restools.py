@@ -250,6 +250,11 @@ class results(object):
         sz = self.res.shape
         if (dim>len(sz)):
             raise ValueError('Cannot take average over dim %d.' % dim)
+        if (len(sz)==2):
+            self.extenddim()
+            self.dimnames[2] = 'Average'
+            self.dim[2] = ['']
+            sz = self.res.shape
         newmean = numpy.nanmean(self.res,axis=dim)
         newstd = numpy.nanstd(self.res,axis=dim)
         newI = numpy.zeros(newmean.shape)
