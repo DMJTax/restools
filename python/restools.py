@@ -75,13 +75,13 @@ class results(object):
 
         if (len(args)==0):
             for i in range(0,nrd):
-                self.dim[i] = map(str,range(sz[i]))
+                self.dim[i] = list(map(str,range(sz[i]))) #DXD: check!!
         else:  # the dimension values are supplied:
             if (len(args)!=nrd):
                 raise ValueError('I am expecting %d input arguments'%(nrd+1))
             for i in range(0,nrd):
                 if (isinstance(args[i],(int,numpy.int))):
-                    self.dim[i] = map(str,range(0,args[i]))
+                    self.dim[i] = list(map(str,range(0,args[i])))
                 else:
                     if (len(args[i])!=sz[i]):
                         raise ValueError('Nr elements in dim %d should be %d.'%(i,sz[i]))
@@ -270,17 +270,18 @@ class results(object):
 
 
     def show(self, type = 'text', numformat = '%4.1f'):
-        sz = self.res.shape
-        if (self.ismeanstd):
+        thisres = copy.deepcopy(self)
+        sz = thisres.res.shape
+        if (thisres.ismeanstd):
             if (len(sz)>3):
                 raise ValueError('Show can only show averaged 2D data.')
             numformat = '%s (%s)' % (numformat,numformat)
-            I = self.dimnames.index('Average')
+            I = thisres.dimnames.index('Average')
             # exceptions exceptions.. :
             if (len(sz)==2):
-                self.extenddim()
-            self.shiftdim(I,2)
-            sz = self.res.shape
+                thisres.extenddim()
+            thisres.shiftdim(I,2)
+            sz = thisres.res.shape
             cellwidth = len(numformat % (1.23456789,1.23456789))
         else:
             if (len(sz)>2):
@@ -300,7 +301,7 @@ class results(object):
             endline = ' \\\\'
             hl = ''
             hlsep = ''
-            hlend = '\\hline \\\\'
+            hlend = '\\hline '
             bstart = '{\\bf '
             bend = '}'
         else:
@@ -308,16 +309,16 @@ class results(object):
         # first headerline
         w0=0
         for i in range(sz[0]):
-            w0 = max(w0,len(self.dim[0][i]))
-        w0 = max(w0,len(self.dimnames[0]))
-        headline0 = ' '*w0 + sep +self.dimnames[1] + endline
+            w0 = max(w0,len(thisres.dim[0][i]))
+        w0 = max(w0,len(thisres.dimnames[0]))
+        headline0 = ' '*w0 + sep +thisres.dimnames[1] + endline
         print headline0
         # second headerline
         w0str = '%'+str(w0)+'s'
-        headline1 = w0str % self.dimnames[0]
+        headline1 = w0str % thisres.dimnames[0]
         w1str = sep+'%'+str(cellwidth)+'s'
         for j in range(0,sz[1]):
-            headline1 += w1str%self.dim[1][j] 
+            headline1 += w1str%thisres.dim[1][j] 
         print headline1+endline
         # third headerline
         headline2 = hl*w0 
@@ -326,16 +327,16 @@ class results(object):
         print(headline2+hlend)
         # the rest:
         for i in range(0,sz[0]):
-            newstr =  w0str % self.dim[0][i]
+            newstr =  w0str % thisres.dim[0][i]
             for j in range(0,sz[1]):
-                if (self.ismeanstd):  # we should write  num (num)
-                    if (self.res[i,j,2]==0):
-                        newstr += sep+numformat % (self.res[i,j,0],self.res[i,j,1])
+                if (thisres.ismeanstd):  # we should write  num (num)
+                    if (thisres.res[i,j,2]==0):
+                        newstr += sep+numformat % (thisres.res[i,j,0],thisres.res[i,j,1])
                     else:
                         newstr += sep+bstart+\
-                                numformat % (self.res[i,j,0],self.res[i,j,1])+bend
+                                numformat % (thisres.res[i,j,0],thisres.res[i,j,1])+bend
                 else:
-                    newstr += sep+numformat % self.res[i,j]
+                    newstr += sep+numformat % thisres.res[i,j]
             newstr += endline
             print(newstr)
 
