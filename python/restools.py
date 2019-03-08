@@ -55,7 +55,7 @@ import numpy
 import scipy.stats
 import copy   # I hate python
 import matplotlib.pyplot as plt
-
+import pickle
 
 # === results object ===
 class results(object):
@@ -364,6 +364,18 @@ class results(object):
             plt.errorbar(xvals,thisres.res[:,i,0], thisres.res[:,i,1],label=thisres.dim[1][i])
         plt.legend()
         plt.xticks(xvals,xticklabs)
+
+    def save(self,fname):
+        fid = open(fname,'w')
+        pickle.dump(self,fid)
+        fid.close()
+
+def load(fname):
+    fid = open(fname,'r')
+    R = pickle.load(fid)
+    fid.close()
+    return R
+
 
 
 def ttest_dep(bestx,x):
