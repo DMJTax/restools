@@ -54,6 +54,8 @@
 import numpy
 import scipy.stats
 import copy   # I hate python
+import matplotlib.pyplot as plt
+
 
 # === results object ===
 class results(object):
@@ -339,6 +341,28 @@ class results(object):
                     newstr += sep+numformat % thisres.res[i,j]
             newstr += endline
             print(newstr)
+
+    def plot(self):
+        thisres = copy.deepcopy(self)
+        sz = thisres.res.shape
+        if (thisres.ismeanstd):
+            if (len(sz)>3):
+                raise ValueError('Plot can only plot averaged 2D data.')
+            I = thisres.dimnames.index('Average')
+            # exceptions exceptions.. :
+            if (len(sz)==2):
+                thisres.extenddim()
+            thisres.shiftdim(I,2)
+            sz = thisres.res.shape
+        else:
+            if (len(sz)>2):
+                raise ValueError('Plot can only plot 2D data.')
+
+        xvals = thisres.dim[0]
+        for i in range(sz[1]):
+            plt.errorbar(xvals,thisres.res[:,i,0], thisres.res[:,i,1],label=thisres.dim[1][i])
+        plt.legend()
+
 
 def ttest_dep(bestx,x):
     K = len(bestx)
