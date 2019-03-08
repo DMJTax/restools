@@ -358,10 +358,12 @@ class results(object):
             if (len(sz)>2):
                 raise ValueError('Plot can only plot 2D data.')
 
-        xvals = thisres.dim[0]
+        xticklabs = thisres.dim[0]
+        xvals = range(sz[0])
         for i in range(sz[1]):
             plt.errorbar(xvals,thisres.res[:,i,0], thisres.res[:,i,1],label=thisres.dim[1][i])
         plt.legend()
+        plt.xticks(xvals,xticklabs)
 
 
 def ttest_dep(bestx,x):
