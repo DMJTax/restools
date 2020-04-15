@@ -34,7 +34,6 @@ else
 	t = sqrt(K)*meandf/stddf;
 
 	p = mytcdf(-t,K-1);
-   p
 end
 
 return
