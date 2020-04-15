@@ -418,26 +418,33 @@ case 'bar'
 
 	% now draw the bars:
 	h = bar(Rmean');
-	% fix the colors and put some errorbar:
-	for i=1:length(h)
-		%set(h(i),'facecolor',clrs(i,:));
-		if ~isempty(Rstd)
-			ch = get(h(i),'children');
-         if isempty(ch) %Matlab R2016b 
-            [nrbars,nrgroups] = size(Rmean);
-            groupwidth = min(0.8, nrbars/(nrbars + 1.5));
-            for i = 1:nrbars
-             % Calculate center of each bar
-               x = (1:nrgroups) - groupwidth/2 + (2*i-1) * groupwidth / (2*nrbars);
-               errorbar(x, Rmean(i,:), Rstd(i,:), 'k', 'linestyle', 'none');
+   if length(h)==1 % Matlab R2018a
+      x=get(h,'xdata');
+      hold on;
+      errorbar(x,Rmean,Rstd,'k','linestyle','none')
+   else
+         
+      % fix the colors and put some errorbar:
+      for i=1:length(h)
+         %set(h(i),'facecolor',clrs(i,:));
+         if ~isempty(Rstd)
+            ch = get(h(i),'children');
+            if isempty(ch) %Matlab R2016b 
+               [nrbars,nrgroups] = size(Rmean);
+               groupwidth = min(0.8, nrbars/(nrbars + 1.5));
+               for i = 1:nrbars
+                % Calculate center of each bar
+                  x = (1:nrgroups) - groupwidth/2 + (2*i-1) * groupwidth / (2*nrbars);
+                  errorbar(x, Rmean(i,:), Rstd(i,:), 'k', 'linestyle', 'none');
+               end
+            else
+               ex = get(ch,'xdata');
+               ex = mean(ex(2:3,:),1);
+               ey = get(ch,'ydata');
+               errorbar(ex,ey(2,:),Rstd(i,:),'k.');
             end
-         else
-            ex = get(ch,'xdata');
-            ex = mean(ex(2:3,:),1);
-            ey = get(ch,'ydata');
-            errorbar(ex,ey(2,:),Rstd(i,:),'k.');
          end
-		end
+      end
 	end
 	set(gca,'xtick',1:nrx);
 	set(gca,'xticklabel',cellstr(Xlabels));
