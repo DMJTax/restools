@@ -103,6 +103,7 @@ function Ibold = findsignif(res,Rmean,dim,boldtype,ttype,alpha)
 %                 be identical
 % ttype = 'indep' assume that the results on each individual run are
 %                 still sampled randomly
+% ttype = 'win'   the highest/lowest
 
 nrd = length(size(res));
 
