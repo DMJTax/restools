@@ -40,7 +40,7 @@ if nargin>1
 	% Now the following input arguments should be the names of the
 	% dimension values
 	if length(varargin)~=nrd
-		error(sprintf('I am expecting %d input arguments.',nrd+1));
+      error(sprintf('I am expecting %d input arguments.',nrd+1));
 	end
 
 	% check for each dimension if the values are good.
