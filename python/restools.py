@@ -219,7 +219,7 @@ class results(object):
         if (src==target):
             return self
         sz = self.res.shape
-        I = range(len(sz))
+        I = list(range(len(sz)))
         I[src] = target
         I[target] = src
         self.permute(I)
@@ -314,14 +314,14 @@ class results(object):
             w0 = max(w0,len(thisres.dim[0][i]))
         w0 = max(w0,len(thisres.dimnames[0]))
         headline0 = ' '*w0 + sep +thisres.dimnames[1] + endline
-        print headline0
+        print(headline0)
         # second headerline
         w0str = '%'+str(w0)+'s'
         headline1 = w0str % thisres.dimnames[0]
         w1str = sep+'%'+str(cellwidth)+'s'
         for j in range(0,sz[1]):
             headline1 += w1str%thisres.dim[1][j] 
-        print headline1+endline
+        print(headline1+endline)
         # third headerline
         headline2 = hl*w0 
         for j in range(0,sz[1]):
@@ -342,7 +342,7 @@ class results(object):
             newstr += endline
             print(newstr)
 
-    def plot(self):
+    def plot(self,linestyle='-'):
         thisres = copy.deepcopy(self)
         sz = thisres.res.shape
         if (thisres.ismeanstd):
@@ -361,7 +361,7 @@ class results(object):
         xticklabs = thisres.dim[0]
         xvals = range(sz[0])
         for i in range(sz[1]):
-            plt.errorbar(xvals,thisres.res[:,i,0], thisres.res[:,i,1],label=thisres.dim[1][i])
+            plt.errorbar(xvals,thisres.res[:,i,0], thisres.res[:,i,1],label=thisres.dim[1][i],linestyle=linestyle,ecolor='b')
         plt.legend()
         plt.xticks(xvals,xticklabs)
 
