@@ -39,7 +39,6 @@ else
 	t = abs(m1-m2)/(s12 * sqrt(1/n1 + 1/n2));
 
 	p = 2*mytcdf(-t,dof);
-   p
 end
 
 return
