@@ -90,7 +90,8 @@ class results(object):
                     if (isinstance(args[i][0],str)):
                         self.dim[i] = args[i]
                     else:
-                        self.dim[i] = map(str,args[i])
+                        self.dim[i] = list(map(str,args[i]))
+                        #self.dim[i] = map(str,args[i])
 
     def __str__(self):
         sz = self.res.shape
@@ -361,7 +362,12 @@ class results(object):
         xticklabs = thisres.dim[0]
         xvals = range(sz[0])
         for i in range(sz[1]):
-            plt.errorbar(xvals,thisres.res[:,i,0], thisres.res[:,i,1],label=thisres.dim[1][i],linestyle=linestyle,ecolor='b')
+            plt.errorbar(xvals,thisres.res[:,i,0],\
+                    thisres.res[:,i,1],\
+                    label=thisres.dim[1][i],\
+                    linestyle=linestyle,\
+                    ecolor=None)
+                    #ecolor='b')
         plt.legend()
         plt.xticks(xvals,xticklabs)
 
@@ -452,6 +458,15 @@ def findsignif(res,dim,boldtype,testtype,alpha):
         I = I.transpose()
 
     return I
+
+def getwnames(u):
+    """
+    Get the list of names out of a list of mappings.
+    """
+    out = []
+    for map in u:
+        out.append(map.name)
+    return out
 
 
 
