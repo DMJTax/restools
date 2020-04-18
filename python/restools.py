@@ -373,15 +373,96 @@ class results(object):
 
     def save(self,fname):
         fid = open(fname,'w')
-        pickle.dump(self,fid)
-        fid.close()
+        fid.write('Results version 0.1\n')
+        # write the size
+        sz = self.shape()
+        fid.write('%d'%sz[0])
+        for i in range(1,len(sz)):
+            fid.write(',%d'%sz[i])
+        # write the name
+        fid.write('\n'+self.name)
+        # write the dimnames
+        fid.write('\n'+self.dimnames[0])
+        for i in range(1,len(sz)):
+            fid.write(','+self.dimnames[i])
+        # write dimvalues
+        for i in range(len(sz)):
+            fid.write('\n')
+            fid.write(self.dim[i][0])
+            for j in range(1,sz[i]):
+                fid.write(','+self.dim[i][j])
+        # all the data:
+        # in this stupid version I only do 2D or 3D;
+        if (len(sz)==2):
+            for i in range(sz[0]):
+                fid.write('\n%f'%self.res[i,0])
+                for j in range(1,sz[1]):
+                    fid.write(',%f'%self.res[i,j])
+            fid.write('\n')
+        elif (len(sz)==3):
+            for i in range(sz[0]):
+                for j in range(sz[1]):
+                    fid.write('\n%f'%self.res[i,j,0])
+                    for k in range(1,sz[2]):
+                        fid.write(',%f'%self.res[i,j,k])
+            fid.write('\n')
+        else:
+            raise ValueError('I can only handle 2D Results.')
+        fid.close
+        return
+
 
 def load(fname):
     fid = open(fname,'r')
-    R = pickle.load(fid)
-    fid.close()
-    return R
+    # check if we have the right version
+    line = fid.readline()
+    if (line != 'Results version 0.1\n'):
+        raise ValueError('I cannot read this file.')
+    # get the size of the results matrix
+    line = fid.readline()
+    sz = line.split(',')
+    for i in range(len(sz)):
+        sz[i] = int(sz[i])
+    # get the name
+    name = fid.readline().rstrip('\n')
+    # get the dimension names:
+    line = fid.readline().rstrip('\n')
+    dimnames = line.split(',')
+    # get the dimension values:
+    dim = [None for i in range(len(sz))]
+    for i in range(len(sz)):
+        line = fid.readline().rstrip('\n')
+        dim[i] = line.split(',')
+    # now the rest of the data:
+    res = numpy.zeros(sz)
+    if (len(sz)==2):
+        # 2 Dimensional data:
+        for i in range(sz[0]):
+            line = fid.readline().rstrip('\n')
+            vals = line.split(',')
+            for j in range(sz[1]):
+                res[i,j] = float(vals[j])
+        # store in results:
+        R = results(res,dim[0],dim[1])
 
+    elif (len(sz)==3):
+        # 3 Dimensional data:
+        for i in range(sz[0]):
+            for j in range(sz[1]):
+                line = fid.readline().rstrip('\n')
+                vals = line.split(',')
+                for k in range(sz[2]):
+                    res[i,j,k] = float(vals[k])
+        # store in results:
+        R = results(res,dim[0],dim[1],dim[2])
+    else:
+        fid.close()
+        raise ValueError('I can only handle 2D Results.')
+    # the last details:
+    fid.close()
+    R.set_name(name)
+    R.set_dimnames(dimnames)
+    return R
 
 
 def ttest_dep(bestx,x):
