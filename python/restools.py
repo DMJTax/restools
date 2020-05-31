@@ -346,7 +346,7 @@ class results(object):
             newstr += endline
             print(newstr)
 
-    def plot(self,linestyle='-'):
+    def plot(self,linestyle='-',colors=None):
         thisres = copy.deepcopy(self)
         sz = thisres.res.shape
         if (thisres.ismeanstd):
@@ -362,6 +362,12 @@ class results(object):
             if (len(sz)>2):
                 raise ValueError('Plot can only plot 2D data.')
 
+        if colors is None:
+            colors = [None]*sz[1]
+        else:
+            if len(colors)==1:
+                colors = [colors]*sz[1]
+        print(colors)
         xticklabs = thisres.dim[0]
         xvals = range(sz[0])
         for i in range(sz[1]):
@@ -369,8 +375,8 @@ class results(object):
                     thisres.res[:,i,1],\
                     label=thisres.dim[1][i],\
                     linestyle=linestyle,\
+                    color=colors[i],\
                     ecolor=None)
-                    #ecolor='b')
         plt.legend()
         plt.xticks(xvals,xticklabs)
         plt.xlabel(thisres.dimnames[0])
