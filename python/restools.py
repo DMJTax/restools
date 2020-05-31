@@ -133,8 +133,11 @@ class results(object):
         if (len(names)!=len(self.res.shape)):
             raise ValueError('Nr elements in "dimnames" does not fit the data.')
         self.dimnames = names
-    def shape(self):
-        return self.res.shape
+    def shape(self,dim=None):
+        if dim is None:
+            return self.res.shape
+        else:
+            return self.res.shape[dim]
 
     def __add__(self,other):  # should I make a copy???
         newr = copy.deepcopy(self)
@@ -370,6 +373,8 @@ class results(object):
                     #ecolor='b')
         plt.legend()
         plt.xticks(xvals,xticklabs)
+        plt.xlabel(thisres.dimnames[0])
+        plt.ylabel(thisres.name)
 
     def save(self,fname):
         fid = open(fname,'w')
