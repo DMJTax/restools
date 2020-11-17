@@ -155,8 +155,16 @@ end
 % Take care for the names, tick labels and sizes:
 Xname = deblank(R.dimnames(2,:));
 Yname = deblank(R.dimnames(1,:));
-Xlabels = num2str(R.dim{2});
-Ylabels = num2str(R.dim{1});
+if isstring(R.dim{2})
+   Xlabels = R.dim{2};
+else
+   Xlabels = num2str(R.dim{2});
+end
+if isstring(R.dim{1})
+   Ylabels = R.dim{1};
+else
+   Ylabels = num2str(R.dim{1});
+end
 [nrx,widthx] = size(Xlabels);
 [nry,widthy] = size(Ylabels);
 namewidth = max(widthy,length(Yname));
